@@ -12,6 +12,8 @@ interface SummaryFeedProps {
   isRefreshing: boolean
   error: string | null
   onRefresh: () => void
+  /** Removes a document from the feed once its DELETE succeeds. */
+  onDeleted: (id: string) => void
 }
 
 const FILTERS = [
@@ -34,6 +36,7 @@ export function SummaryFeed({
   isRefreshing,
   error,
   onRefresh,
+  onDeleted,
 }: SummaryFeedProps) {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<FilterKey>('ALL')
@@ -161,7 +164,12 @@ export function SummaryFeed({
           <EmptyState isSearching={isSearching} query={query} />
         ) : (
           filtered.map((doc, index) => (
-            <SummaryCard key={`${doc.id}-${doc.status}`} document={doc} index={index} />
+            <SummaryCard
+              key={`${doc.id}-${doc.status}`}
+              document={doc}
+              index={index}
+              onDeleted={onDeleted}
+            />
           ))
         )}
       </div>

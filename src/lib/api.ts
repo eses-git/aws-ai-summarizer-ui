@@ -1,5 +1,5 @@
 import type { DocumentRecord, DocumentStatus } from '../types'
-import { listMockDocuments } from './mockData'
+import { listMockDocuments, unregisterMockDocument } from './mockData'
 import { delay } from './utils'
 
 /* -------------------------------------------------------------------------- */
@@ -161,6 +161,26 @@ export async function fetchDocuments(): Promise<DocumentRecord[]> {
   }
 
   return normalizeDocuments(await response.json())
+}
+
+/** `DELETE ${API_BASE_URL}/documents/${id}` → drops the item from DynamoDB (+ S3 object). */
+export async function deleteDocument(id: string): Promise<void> {
+  if (IS_MOCK_MODE) {
+    await delay(300 + Math.random() * 220)
+    unregisterMockDocument(id)
+    return
+  }
+
+  const response = await fetch(`${API_BASE_URL}/documents/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: { Accept: 'application/json' },
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      `DELETE /documents/${id} failed — ${response.status} ${response.statusText}`.trim(),
+    )
+  }
 }
 
 /** Maps any backend list shape onto {@link DocumentRecord}[]. */

@@ -16,6 +16,8 @@ export interface UseDocumentsResult {
   lastSyncedAt: Date | null
   refresh: () => void
   upsertDocument: (doc: DocumentRecord) => void
+  /** Drops a document from the local feed (after a successful DELETE). */
+  removeDocument: (id: string) => void
 }
 
 interface RefreshOptions {
@@ -91,6 +93,10 @@ export function useDocuments(): UseDocumentsResult {
     setDocuments((previous) => [doc, ...previous.filter((item) => item.id !== doc.id)])
   }, [])
 
+  const removeDocument = useCallback((id: string) => {
+    setDocuments((previous) => previous.filter((item) => item.id !== id))
+  }, [])
+
   return {
     documents,
     isLoading,
@@ -100,5 +106,6 @@ export function useDocuments(): UseDocumentsResult {
     lastSyncedAt,
     refresh,
     upsertDocument,
+    removeDocument,
   }
 }

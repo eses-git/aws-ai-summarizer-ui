@@ -126,6 +126,11 @@ export function registerMockDocument(doc: DocumentRecord): void {
   mockDocuments = [doc, ...mockDocuments.filter((item) => item.id !== doc.id)]
 }
 
+/** Removes a mock document, mirroring `DELETE ${API_BASE_URL}/documents/:id`. */
+export function unregisterMockDocument(id: string): void {
+  mockDocuments = mockDocuments.filter((item) => item.id !== id)
+}
+
 /** Restores the original seeded dataset (used by the header reset affordance). */
 export function resetMockDocuments(): void {
   mockDocuments = createInitialMockDocuments()

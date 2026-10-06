@@ -22,6 +22,7 @@ export default function App() {
     lastSyncedAt,
     refresh,
     upsertDocument,
+    removeDocument,
   } = useDocuments()
 
   // Surface the freshly uploaded job in the feed immediately, then let the
@@ -62,6 +63,7 @@ export default function App() {
               isRefreshing={isRefreshing}
               error={error}
               onRefresh={refresh}
+              onDeleted={removeDocument}
             />
           </div>
         </main>

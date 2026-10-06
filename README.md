@@ -11,7 +11,7 @@ Strictly symmetrical two-column dashboard on desktop, stacked on mobile:
 | Column | Component | Responsibility |
 | --- | --- | --- |
 | Left | `UploadCard` + `PipelineStatus` | Drag & drop ingest, two-step presigned upload, live pipeline telemetry |
-| Right | `SummaryFeed` + `SummaryCard` | Searchable DynamoDB results feed, status badges, copy-to-clipboard summaries |
+| Right | `SummaryFeed` + `SummaryCard` | Searchable DynamoDB results feed, status badges, expand/collapse + copy summaries, per-card delete |
 | Top | `Header`, `StatsBar` | API connection indicator, region/theme badges, pipeline metrics |
 
 ## Getting started
@@ -40,7 +40,12 @@ before the stack exists.
 POST  ${VITE_AWS_API_URL}/upload-url   { fileName, fileType } → { uploadUrl, documentId, key }
 PUT   <presigned uploadUrl>            raw file body (Content-Type must match the signature)
 GET   ${VITE_AWS_API_URL}/documents    → [ { documentId, fileName, status, summary, createdAt, fileSize } ]
+DELETE ${VITE_AWS_API_URL}/documents/{id} → 200 OK (removes the DynamoDB item + S3 object)
 ```
+
+Cards support inline **expand/collapse** of long summaries (`line-clamp-3` when collapsed)
+and a **delete** action that issues `DELETE /documents/{id}`, then drops the record from
+the feed's local state on a successful response.
 
 `GET /documents` is normalised defensively: arrays, Lambda proxy envelopes
 (`{ body: "{...}" }`), `documents`/`items`/`results`/`data` wrappers and the common
