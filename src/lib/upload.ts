@@ -3,7 +3,6 @@ import {
   API_BASE_URL,
   IS_MOCK_MODE,
   asRecord,
-  guessContentType,
   isRecord,
   pickNumber,
   pickString,
@@ -21,7 +20,8 @@ export type UploadProgressHandler = (percent: number) => void
  * `POST ${VITE_AWS_API_URL}/upload-url` → time-boxed S3 presigned URL.
  */
 export async function requestUploadUrl(file: File): Promise<UploadTicket> {
-  const contentType = resolveContentType(file)
+  // Explicit extension → MIME resolution (.pdf/.txt/.md); sent as `fileType`.
+  const fileType = resolveContentType(file)
 
   if (IS_MOCK_MODE) {
     await delay(480 + Math.random() * 220)
@@ -33,27 +33,23 @@ export async function requestUploadUrl(file: File): Promise<UploadTicket> {
       summary: '',
       createdAt: new Date().toISOString(),
       fileSize: file.size,
-      contentType: guessContentType(file.name),
+      contentType: fileType,
     })
     return {
       documentId,
       uploadUrl: `mock://s3/local-sandbox/${documentId}`,
       key: `uploads/${documentId}/${file.name}`,
       fileName: file.name,
-      contentType,
+      contentType: fileType,
       fileSize: file.size,
     }
   }
 
+  // Step 1 — request the presigned S3 URL. Contract: { fileName, fileType }.
   const response = await fetch(`${API_BASE_URL}/upload-url`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({
-      fileName: file.name,
-      filename: file.name,
-      contentType,
-      size: file.size,
-    }),
+    body: JSON.stringify({ fileName: file.name, fileType }),
   })
 
   if (!response.ok) {
@@ -78,8 +74,17 @@ export async function requestUploadUrl(file: File): Promise<UploadTicket> {
     key: pickString(record, ['key', 'objectKey', 's3Key']),
     documentId: pickString(record, ['documentId', 'docId', 'id', 'key']) ?? createId('doc'),
     fileName: pickString(record, ['fileName', 'filename', 'name']) ?? file.name,
-    // Honour a server-echoed content type so the S3 signature always matches.
-    contentType: pickString(record, ['contentType', 'content_type']) ?? contentType,
+    // Backend-issued content type wins so the presigned signature always
+    // matches; the locally resolved MIME type is the fallback.
+    contentType:
+      pickString(record, [
+        'contentType',
+        'content_type',
+        'fileType',
+        'file_type',
+        'mimeType',
+        'mime_type',
+      ]) ?? fileType,
     fileSize:
       pickNumber(record, ['fileSize', 'file_size', 'size']) ??
       (isRecord(record.metadata) ? pickNumber(asRecord(record.metadata), ['size']) : undefined) ??
@@ -88,8 +93,10 @@ export async function requestUploadUrl(file: File): Promise<UploadTicket> {
 }
 
 /**
- * Step 2 of the upload flow: `PUT` the raw payload straight to the presigned
- * S3 URL. Uses XHR so real transfer progress can be surfaced in the UI.
+ * Step 2 of the upload flow: `PUT` the raw {@link File} straight to the
+ * presigned S3 URL, with `Content-Type` set to the exact `contentType` returned
+ * by the backend (falling back to the resolved file MIME type). Uses XHR so real
+ * transfer progress can be surfaced in the UI.
  */
 export async function uploadObject(
   ticket: UploadTicket,
@@ -121,6 +128,7 @@ function putWithProgress(
     const request = new XMLHttpRequest()
     request.open('PUT', url, true)
     request.timeout = 120_000
+    // Must mirror the presigned signature (or the resolved file MIME type).
     request.setRequestHeader('Content-Type', contentType)
 
     request.upload.addEventListener('progress', (event) => {
@@ -167,6 +175,7 @@ function putWithProgress(
       signal.addEventListener('abort', () => request.abort(), { once: true })
     }
 
+    // Raw File object — the browser streams its binary payload as the body.
     request.send(file)
   })
 }

@@ -37,7 +37,7 @@ before the stack exists.
 ## Backend contract
 
 ```text
-POST  ${VITE_AWS_API_URL}/upload-url   { fileName, contentType, size } → { uploadUrl, documentId, key }
+POST  ${VITE_AWS_API_URL}/upload-url   { fileName, fileType } → { uploadUrl, documentId, key }
 PUT   <presigned uploadUrl>            raw file body (Content-Type must match the signature)
 GET   ${VITE_AWS_API_URL}/documents    → [ { documentId, fileName, status, summary, createdAt, fileSize } ]
 ```

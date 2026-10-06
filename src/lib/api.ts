@@ -35,11 +35,18 @@ export const SUPPORTED_EXTENSIONS = ['.txt', '.md', '.pdf'] as const
 export const ACCEPT_ATTRIBUTE = '.txt,.md,.pdf,text/plain,text/markdown,application/pdf'
 export const MAX_FILE_BYTES = 10 * 1024 * 1024
 
-const CONTENT_TYPE_BY_EXTENSION: Record<string, string> = {
+/**
+ * Explicit, extension-authoritative MIME map for the `/upload-url` contract:
+ *   .pdf → application/pdf · .txt → text/plain · .md → text/markdown
+ */
+export const MIME_TYPE_BY_EXTENSION: Record<string, string> = {
+  pdf: 'application/pdf',
   txt: 'text/plain',
   md: 'text/markdown',
-  pdf: 'application/pdf',
 }
+
+/** Used only when a file falls outside {@link MIME_TYPE_BY_EXTENSION}. */
+export const DEFAULT_MIME_TYPE = 'application/octet-stream'
 
 /** Lowercase extension without the dot (`''` when the name has none). */
 export function fileExtension(fileName: string): string {
@@ -47,14 +54,30 @@ export function fileExtension(fileName: string): string {
   return index === -1 ? '' : fileName.slice(index + 1).toLowerCase()
 }
 
-export function guessContentType(fileName: string): string {
-  return CONTENT_TYPE_BY_EXTENSION[fileExtension(fileName)] ?? 'text/plain'
+/**
+ * Resolves the MIME type explicitly from the file extension. This is the value
+ * sent to `/upload-url` as `fileType` and re-used as the S3 `Content-Type`.
+ */
+export function resolveFileType(fileName: string): string {
+  return MIME_TYPE_BY_EXTENSION[fileExtension(fileName)] ?? DEFAULT_MIME_TYPE
 }
 
-/** Prefers the browser supplied MIME type, falling back to the extension map. */
+/** Extension-derived MIME type with a readable `text/plain` fallback (feed display). */
+export function guessContentType(fileName: string): string {
+  return MIME_TYPE_BY_EXTENSION[fileExtension(fileName)] ?? 'text/plain'
+}
+
+/**
+ * Resolves the upload MIME type for a `File`. The extension map is authoritative
+ * so `.md` always uploads as `text/markdown` regardless of what the browser
+ * reports; the browser-reported type is only consulted for unmapped extensions.
+ */
 export function resolveContentType(file: File): string {
+  const byExtension = MIME_TYPE_BY_EXTENSION[fileExtension(file.name)]
+  if (byExtension) return byExtension
+
   const browserType = file.type.trim()
-  return browserType.length > 0 ? browserType : guessContentType(file.name)
+  return browserType.length > 0 ? browserType : DEFAULT_MIME_TYPE
 }
 
 export function isSupportedFile(file: File): boolean {
