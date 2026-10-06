@@ -25,9 +25,9 @@ const FILTERS = [
 type FilterKey = (typeof FILTERS)[number]['key']
 
 const ACTION_CHIP =
-  'rounded-md border border-line bg-canvas px-2 py-1 font-mono text-[10px] tracking-[0.14em] text-faint tabular-nums uppercase'
+  'rounded-none border border-slate-300 bg-white px-2 py-1 font-mono text-[10px] tracking-[0.14em] text-slate-500 tabular-nums uppercase'
 
-const REFRESH_BUTTON = 'rounded-md border border-line bg-canvas p-1.5 transition-colors'
+const REFRESH_BUTTON = 'rounded-none border border-slate-300 bg-white p-1.5 transition-colors'
 
 /** Right column: searchable, refreshable DynamoDB results feed. */
 export function SummaryFeed({
@@ -78,7 +78,7 @@ export function SummaryFeed({
             title="GET /documents"
             className={cn(
               REFRESH_BUTTON,
-              isRefreshing ? 'text-accent' : 'text-faint hover:border-accent/40 hover:text-accent',
+              isRefreshing ? 'text-slate-900' : 'text-slate-500 hover:border-slate-900 hover:text-slate-900',
             )}
           >
             <RefreshCw className={cn('size-3.5', isRefreshing && 'animate-spin')} />
@@ -86,15 +86,15 @@ export function SummaryFeed({
         </>
       }
       footer={
-        <div className="flex items-center justify-between gap-3 font-mono text-[10px] tracking-[0.1em] text-faint uppercase">
+        <div className="flex items-center justify-between gap-3 font-mono text-[10px] tracking-[0.1em] text-slate-400 uppercase">
           {processingCount > 0 ? (
-            <span className="flex items-center gap-2 text-warn">
-              <span className="size-1.5 animate-pulse-soft rounded-full bg-warn" />
+            <span className="flex items-center gap-2 text-amber-600">
+              <span className="size-1.5 animate-pulse-soft rounded-none bg-amber-500" />
               auto-refresh · {processingCount} in flight
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-success" />
+              <span className="size-1.5 rounded-none bg-emerald-500" />
               queue idle
             </span>
           )}
@@ -104,36 +104,36 @@ export function SummaryFeed({
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-faint" />
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search file name, document id or summary…"
             aria-label="Search summaries"
-            className="w-full rounded-lg border border-line bg-canvas py-2.5 pr-9 pl-9 font-mono text-xs text-ink transition-colors placeholder:text-faint focus:border-accent-line focus:outline-none"
+            className="w-full rounded-none border border-slate-300 bg-white py-2.5 pr-9 pl-9 font-mono text-xs text-slate-900 transition-colors placeholder:text-slate-400 focus:border-slate-900 focus:ring-0 focus:outline-none"
           />
           {isSearching ? (
             <button
               type="button"
               onClick={() => setQuery('')}
               aria-label="Clear search"
-              className="absolute top-1/2 right-2 -translate-y-1/2 rounded p-1 text-faint transition-colors hover:text-ink"
+              className="absolute top-1/2 right-2 -translate-y-1/2 rounded-none p-1 text-slate-400 transition-colors hover:text-slate-900"
             >
               <X className="size-3.5" />
             </button>
           ) : null}
         </div>
 
-        <div className="flex shrink-0 items-center gap-1 rounded-lg border border-line bg-canvas p-1">
+        <div className="flex shrink-0 items-center gap-1 rounded-none border border-slate-300 bg-white p-1">
           {FILTERS.map(({ key, label }) => (
             <button
               key={key}
               type="button"
               onClick={() => setFilter(key)}
               className={cn(
-                'rounded-md px-2.5 py-1.5 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors',
-                filter === key ? 'bg-accent-soft text-accent' : 'text-faint hover:text-muted',
+                'rounded-none px-2.5 py-1.5 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors',
+                filter === key ? 'bg-slate-900 text-white' : 'text-slate-500 hover:text-slate-900',
               )}
             >
               {label}
@@ -142,7 +142,7 @@ export function SummaryFeed({
         </div>
       </div>
       {error ? (
-        <div className="flex items-start gap-2 rounded-lg border border-danger/30 bg-danger-soft px-3 py-2.5 text-xs text-danger">
+        <div className="flex items-start gap-2 rounded-none border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs text-rose-700">
           <TriangleAlert className="mt-0.5 size-3.5 shrink-0" />
           <div className="min-w-0">
             <p className="leading-relaxed">{error}</p>
@@ -180,16 +180,16 @@ export function SummaryFeed({
 /** Loading placeholder matching the summary card rhythm. */
 function FeedSkeleton() {
   return (
-    <div className="animate-pulse rounded-xl border border-line bg-canvas-soft/50 p-4">
+    <div className="animate-pulse rounded-none border border-slate-200 bg-slate-50 p-4">
       <div className="flex items-center gap-3">
-        <span className="size-9 shrink-0 rounded-lg bg-line/70" />
+        <span className="size-9 shrink-0 rounded-none bg-slate-200" />
         <div className="flex-1 space-y-2">
-          <span className="block h-3 w-1/2 rounded bg-line/70" />
-          <span className="block h-2 w-1/3 rounded bg-line/50" />
+          <span className="block h-3 w-1/2 rounded-none bg-slate-200" />
+          <span className="block h-2 w-1/3 rounded-none bg-slate-200" />
         </div>
-        <span className="h-5 w-20 shrink-0 rounded bg-line/60" />
+        <span className="h-5 w-20 shrink-0 rounded-none bg-slate-200" />
       </div>
-      <div className="mt-3 h-16 rounded-lg bg-line/40" />
+      <div className="mt-3 h-16 rounded-none bg-slate-100" />
     </div>
   )
 }
@@ -199,18 +199,18 @@ function EmptyState({ isSearching, query }: { isSearching: boolean; query: strin
   const Icon = isSearching ? Search : FileText
 
   return (
-    <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-line-strong bg-canvas-soft/40 px-6 py-12 text-center">
-      <span className="flex size-11 items-center justify-center rounded-xl border border-line bg-canvas text-faint">
+    <div className="flex flex-col items-center justify-center gap-3 rounded-none border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center">
+      <span className="flex size-11 items-center justify-center rounded-none border border-slate-200 bg-white text-slate-400">
         <Icon className="size-5" />
       </span>
       <div className="space-y-1">
-        <p className="text-sm text-ink">
+        <p className="text-sm text-slate-900">
           {isSearching ? 'No matching documents' : 'Knowledge base is empty'}
         </p>
-        <p className="text-xs text-muted">
+        <p className="text-xs text-slate-500">
           {isSearching ? (
             <>
-              Nothing matches <span className="font-mono text-accent">{query}</span> — try another
+              Nothing matches <span className="font-mono text-slate-900">{query}</span> — try another
               term.
             </>
           ) : (

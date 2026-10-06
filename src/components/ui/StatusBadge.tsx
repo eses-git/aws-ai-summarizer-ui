@@ -7,17 +7,17 @@ interface StatusBadgeProps {
   className?: string
 }
 
-/** High-contrast monospaced status pill: emerald for processed, amber for in-flight. */
+/** High-contrast monospaced status tag: emerald for processed, indigo for in-flight. */
 export function StatusBadge({ status, className }: StatusBadgeProps) {
   const isProcessed = status === 'PROCESSED'
 
   return (
     <span
       className={cn(
-        'inline-flex shrink-0 items-center gap-1.5 rounded-md border px-2 py-1 font-mono text-[10px] leading-none font-medium tracking-[0.14em] uppercase',
+        'inline-flex shrink-0 items-center gap-1.5 rounded-none border px-2 py-0.5 font-mono text-xs leading-none font-medium tracking-wider uppercase',
         isProcessed
-          ? 'border-success/30 bg-success-soft text-success'
-          : 'border-warn/30 bg-warn-soft text-warn',
+          ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+          : 'border-indigo-200 bg-indigo-50 text-indigo-800',
         className,
       )}
     >

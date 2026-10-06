@@ -1,8 +1,9 @@
 # AWS Serverless AI Document Summarizer — Console UI
 
-A dark, technical control panel for the serverless document summarization pipeline
+A crisp, light-mode **"Corporate Executive"** console for the serverless document summarization pipeline
 (API Gateway → Lambda → S3 → DynamoDB → Bedrock). Built with **React 19**, **TypeScript**,
-**Vite 8** and **Tailwind CSS 4**, deployable to Vercel or Netlify as a static SPA.
+**Vite 8** and **Tailwind CSS 4** — sharp 90° geometry, slate hairlines and midnight-navy accents,
+deployable to Vercel or Netlify as a static SPA.
 
 ## Layout
 

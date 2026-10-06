@@ -1,44 +1,13 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   Design tokens — "Console Dark" theme
-   (Vercel / Supabase / AWS Console inspired technical dashboard)
+   Design tokens — "Corporate Executive" theme (light)
+   Sharp 90° geometry · slate hairlines · midnight-navy accents
    ========================================================================== */
 @theme {
-  /* Surfaces */
-  --color-canvas: #090d16;
-  --color-canvas-soft: #0b1120;
-  --color-panel: #0b1424;
-  --color-panel-soft: #0f1a2d;
-
-  /* Hairlines */
-  --color-line: #1e293b;
-  --color-line-strong: #2c3d55;
-
-  /* Typography */
-  --color-ink: #e6edf7;
-  --color-muted: #94a3b8;
-  --color-faint: #64748b;
-
-  /* Signal colours */
-  --color-accent: #38bdf8;
-  --color-accent-strong: #0ea5e9;
-  --color-accent-soft: rgba(56, 189, 248, 0.12);
-  --color-accent-line: rgba(56, 189, 248, 0.42);
-  --color-success: #34d399;
-  --color-success-soft: rgba(52, 211, 153, 0.12);
-  --color-warn: #fbbf24;
-  --color-warn-soft: rgba(251, 191, 36, 0.12);
-  --color-danger: #f87171;
-  --color-danger-soft: rgba(248, 113, 113, 0.12);
-
   /* Type stacks */
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-
-  /* Elevation */
-  --shadow-panel: 0 24px 60px -38px rgba(0, 0, 0, 0.95);
-  --shadow-glow: 0 0 0 1px rgba(56, 189, 248, 0.2), 0 20px 45px -28px rgba(56, 189, 248, 0.55);
 
   /* Motion */
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
@@ -81,14 +50,14 @@
    ========================================================================== */
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
     margin: 0;
     min-height: 100vh;
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
+    background-color: #f4f6f8;
+    color: #0f172a;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -96,18 +65,18 @@
   }
 
   ::selection {
-    background-color: rgba(56, 189, 248, 0.3);
-    color: #f8fafc;
+    background-color: rgba(15, 23, 42, 0.14);
+    color: #0f172a;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid #0f172a;
     outline-offset: 2px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-line-strong) transparent;
+    scrollbar-color: #cbd5e1 transparent;
   }
 
   *::-webkit-scrollbar {
@@ -120,25 +89,12 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: var(--color-line);
-    background-clip: padding-box;
-    border: 3px solid transparent;
-    border-radius: 9999px;
+    background-color: #cbd5e1;
+    border-radius: 0;
   }
 
   *::-webkit-scrollbar-thumb:hover {
-    background-color: var(--color-line-strong);
+    background-color: #94a3b8;
   }
 }
 
-/* ==========================================================================
-   Utilities
-   ========================================================================== */
-
-/** Faint blueprint grid used behind the dashboard body. */
-@utility console-grid {
-  background-image:
-    linear-gradient(to right, rgba(148, 163, 184, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
-  background-size: 48px 48px;
-}

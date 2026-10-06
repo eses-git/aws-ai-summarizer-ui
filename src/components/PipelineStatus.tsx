@@ -29,17 +29,17 @@ const STAGE_INDEX: Record<PipelineStage, number> = {
 }
 
 const GLYPH_CLASSES: Record<StepState, string> = {
-  pending: 'border-line bg-canvas text-faint',
-  active: 'border-accent-line bg-accent-soft text-accent',
-  done: 'border-success/30 bg-success-soft text-success',
-  failed: 'border-danger/30 bg-danger-soft text-danger',
+  pending: 'border-slate-200 bg-white text-slate-400',
+  active: 'border-indigo-200 bg-indigo-50 text-indigo-600',
+  done: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+  failed: 'border-rose-200 bg-rose-50 text-rose-700',
 }
 
 const LABEL_CLASSES: Record<StepState, string> = {
-  pending: 'text-faint',
-  active: 'text-ink',
-  done: 'text-muted',
-  failed: 'text-danger',
+  pending: 'text-slate-400',
+  active: 'text-slate-900',
+  done: 'text-slate-500',
+  failed: 'text-rose-700',
 }
 
 /** Live three-step pipeline stepper rendered under the upload controls. */
@@ -59,21 +59,21 @@ export function PipelineStatus({ stage, failedStep, className }: PipelineStatusP
   }
 
   return (
-    <div className={cn('border-t border-line/70 pt-4', className)}>
+    <div className={cn('border-t border-slate-200 pt-4', className)}>
       <div className="flex items-center justify-between gap-3">
-        <p className="font-mono text-[10px] tracking-[0.18em] text-faint uppercase">
+        <p className="font-mono text-[10px] tracking-[0.18em] text-slate-400 uppercase">
           Live Pipeline Status
         </p>
         <p
           className={cn(
             'font-mono text-[10px] tracking-[0.14em] uppercase',
             stage === 'error'
-              ? 'text-danger'
+              ? 'text-rose-700'
               : stage === 'complete'
-                ? 'text-success'
+                ? 'text-emerald-700'
                 : stage === 'idle'
-                  ? 'text-faint'
-                  : 'text-accent',
+                  ? 'text-slate-400'
+                  : 'text-indigo-600',
           )}
         >
           {STAGE_LABEL[stage]}
@@ -87,11 +87,11 @@ export function PipelineStatus({ stage, failedStep, className }: PipelineStatusP
           return (
             <li
               key={step.label}
-              className="flex items-center gap-3 rounded-lg border border-line/60 bg-canvas-soft/40 px-3 py-2 transition-colors"
+              className="flex items-center gap-3 rounded-none border border-slate-200 bg-slate-50 px-3 py-2 transition-colors"
             >
               <span
                 className={cn(
-                  'flex size-6 shrink-0 items-center justify-center rounded-md border font-mono text-[10px]',
+                  'flex size-6 shrink-0 items-center justify-center rounded-none border font-mono text-[10px]',
                   GLYPH_CLASSES[state],
                 )}
               >
@@ -110,7 +110,7 @@ export function PipelineStatus({ stage, failedStep, className }: PipelineStatusP
                 {step.label}
               </span>
 
-              <span className="hidden font-mono text-[10px] tracking-[0.1em] text-faint uppercase sm:inline">
+              <span className="hidden font-mono text-[10px] tracking-[0.1em] text-slate-400 uppercase sm:inline">
                 {step.detail}
               </span>
             </li>

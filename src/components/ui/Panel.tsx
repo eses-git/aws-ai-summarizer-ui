@@ -36,21 +36,21 @@ export function Panel({
   return (
     <section
       className={cn(
-        'flex min-h-0 flex-col overflow-hidden rounded-2xl border border-line bg-panel/70 shadow-panel backdrop-blur-sm',
+        'flex min-h-0 flex-col overflow-hidden rounded-none border border-slate-200 bg-white',
         className,
       )}
     >
-      <header className="flex items-start gap-3 border-b border-line/80 bg-canvas-soft/60 px-5 py-4">
+      <header className="flex items-start gap-3 border-b border-slate-200 bg-slate-50 px-5 py-4">
         {icon ? (
-          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg border border-line bg-canvas text-accent">
+          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-none border border-slate-200 bg-white text-slate-900">
             {icon}
           </span>
         ) : null}
 
         <div className="min-w-0 flex-1">
-          <h2 className="truncate text-sm font-semibold tracking-tight text-ink">{title}</h2>
+          <h2 className="truncate text-sm font-semibold tracking-tight text-slate-900">{title}</h2>
           {subtitle ? (
-            <p className="mt-1 truncate font-mono text-[10px] tracking-[0.16em] text-faint uppercase">
+            <p className="mt-1 truncate font-mono text-[10px] tracking-[0.16em] text-slate-400 uppercase">
               {subtitle}
             </p>
           ) : null}
@@ -62,7 +62,7 @@ export function Panel({
       <div className={cn('flex-1 px-5 py-5', bodyClassName)}>{children}</div>
 
       {footer ? (
-        <footer className="border-t border-line/80 bg-canvas-soft/40 px-5 py-3">{footer}</footer>
+        <footer className="border-t border-slate-200 bg-slate-50 px-5 py-3">{footer}</footer>
       ) : null}
     </section>
   )

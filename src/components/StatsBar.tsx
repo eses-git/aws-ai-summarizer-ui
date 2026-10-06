@@ -29,8 +29,8 @@ export function StatsBar({ documents, isLoading, lastSyncedAt }: StatsBarProps) 
       value: awaitingFirstSync ? placeholder : String(total),
       hint: 'DynamoDB knowledge base',
       Icon: Layers,
-      text: 'text-accent',
-      bar: 'from-accent/70 to-accent',
+      text: 'text-indigo-600',
+      bar: 'from-indigo-500 to-indigo-600',
       meter: total > 0 ? 100 : 0,
     },
     {
@@ -39,8 +39,8 @@ export function StatsBar({ documents, isLoading, lastSyncedAt }: StatsBarProps) 
       value: awaitingFirstSync ? placeholder : String(processed),
       hint: `${completionRate}% pipeline success`,
       Icon: CircleCheck,
-      text: 'text-success',
-      bar: 'from-success/70 to-success',
+      text: 'text-emerald-600',
+      bar: 'from-emerald-500 to-emerald-600',
       meter: completionRate,
     },
     {
@@ -49,8 +49,8 @@ export function StatsBar({ documents, isLoading, lastSyncedAt }: StatsBarProps) 
       value: awaitingFirstSync ? placeholder : String(processing),
       hint: processing > 0 ? 'Lambda workers active' : 'Queue drained',
       Icon: Activity,
-      text: 'text-warn',
-      bar: 'from-warn/70 to-warn',
+      text: 'text-amber-600',
+      bar: 'from-amber-500 to-amber-600',
       meter: percentage(processing, total),
     },
     {
@@ -59,8 +59,8 @@ export function StatsBar({ documents, isLoading, lastSyncedAt }: StatsBarProps) 
       value: awaitingFirstSync ? placeholder : formatBytes(storageBytes),
       hint: 'S3 standard tier',
       Icon: HardDrive,
-      text: 'text-accent',
-      bar: 'from-accent/70 to-accent',
+      text: 'text-indigo-600',
+      bar: 'from-indigo-500 to-indigo-600',
       meter: Math.min(100, percentage(storageBytes, STORAGE_BUDGET_BYTES)),
     },
   ]
@@ -68,10 +68,10 @@ export function StatsBar({ documents, isLoading, lastSyncedAt }: StatsBarProps) 
   return (
     <section aria-label="Pipeline metrics" className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-mono text-[10px] tracking-[0.2em] text-faint uppercase">
+        <h2 className="font-mono text-[10px] tracking-[0.2em] text-slate-400 uppercase">
           Pipeline Metrics
         </h2>
-        <p className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-faint uppercase">
+        <p className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-slate-400 uppercase">
           <RefreshCw className={cn('size-3', isLoading && 'animate-spin')} />
           {lastSyncedAt
             ? `last sync ${formatRelativeTime(lastSyncedAt.toISOString())}`
@@ -83,26 +83,26 @@ export function StatsBar({ documents, isLoading, lastSyncedAt }: StatsBarProps) 
         {tiles.map(({ key, label, value, hint, Icon, text, bar, meter }) => (
           <article
             key={key}
-            className="group relative overflow-hidden rounded-xl border border-line bg-panel/60 p-4 transition-colors hover:border-line-strong hover:bg-panel"
+            className="group relative overflow-hidden rounded-none border border-slate-200 bg-white p-4 transition-colors hover:border-slate-300"
           >
             <span className={cn('absolute inset-x-0 top-0 h-px bg-gradient-to-r', bar)} />
 
             <div className="flex items-center justify-between gap-3">
-              <p className="truncate font-mono text-[10px] tracking-[0.16em] text-faint uppercase">
+              <p className="truncate font-mono text-[10px] tracking-[0.16em] text-slate-400 uppercase">
                 {label}
               </p>
               <Icon className={cn('size-4 shrink-0', text)} />
             </div>
 
-            <p className="mt-3 font-mono text-2xl leading-none font-semibold text-ink tabular-nums">
+            <p className="mt-3 font-mono text-2xl leading-none font-semibold text-slate-900 tabular-nums">
               {value}
             </p>
-            <p className="mt-2 truncate text-[11px] text-muted">{hint}</p>
+            <p className="mt-2 truncate text-[11px] text-slate-500">{hint}</p>
 
-            <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-line/60">
+            <div className="mt-3 h-1 w-full overflow-hidden rounded-none bg-slate-100">
               <div
                 className={cn(
-                  'h-full rounded-full bg-gradient-to-r transition-[width] duration-500',
+                  'h-full rounded-none bg-gradient-to-r transition-[width] duration-500',
                   bar,
                 )}
                 style={{ width: `${meter}%` }}

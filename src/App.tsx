@@ -35,18 +35,13 @@ export default function App() {
   )
 
   return (
-    <div className="relative min-h-screen bg-canvas">
-      <div
-        aria-hidden="true"
-        className="console-grid pointer-events-none absolute inset-x-0 top-0 h-[520px] opacity-80"
-      />
-
+    <div className="relative min-h-screen bg-[#F4F6F8]">
       <div className="relative flex min-h-screen flex-col">
         <Header connection={connection} documentCount={documents.length} />
 
         {IS_MOCK_MODE ? (
-          <div className="border-b border-accent-line/50 bg-accent-soft">
-            <p className="mx-auto max-w-[1440px] px-4 py-2 font-mono text-[10px] tracking-[0.14em] text-accent uppercase sm:px-6 lg:px-8">
+          <div className="border-b border-indigo-200 bg-indigo-50">
+            <p className="mx-auto max-w-[1440px] px-4 py-2 font-mono text-[10px] tracking-[0.14em] text-indigo-700 uppercase sm:px-6 lg:px-8">
               sandbox dataset active — set VITE_AWS_API_URL in .env.local to stream from API Gateway
             </p>
           </div>
@@ -68,8 +63,8 @@ export default function App() {
           </div>
         </main>
 
-        <footer className="border-t border-line/80 bg-canvas-soft/40 px-4 py-5 sm:px-6 lg:px-8">
-          <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-2 font-mono text-[10px] tracking-[0.14em] text-faint uppercase">
+        <footer className="border-t border-slate-200 bg-white px-4 py-5 sm:px-6 lg:px-8">
+          <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-2 font-mono text-[10px] tracking-[0.14em] text-slate-400 uppercase">
             <span className="truncate">endpoint · {API_LABEL}</span>
             <span>region · {AWS_REGION} · react 19 · vite 8 · tailwind 4</span>
           </div>

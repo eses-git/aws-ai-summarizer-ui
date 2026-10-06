@@ -183,12 +183,12 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
       className="h-full"
       bodyClassName="flex flex-col gap-4"
       actions={
-        <span className="rounded-md border border-line bg-canvas px-2 py-1 font-mono text-[10px] tracking-[0.14em] text-faint uppercase">
+        <span className="rounded-none border border-slate-300 bg-white px-2 py-1 font-mono text-[10px] tracking-[0.14em] text-slate-500 uppercase">
           {IS_MOCK_MODE ? 'mock' : 'live'}
         </span>
       }
       footer={
-        <p className="font-mono text-[10px] leading-relaxed tracking-[0.1em] text-faint uppercase">
+        <p className="font-mono text-[10px] leading-relaxed tracking-[0.1em] text-slate-400 uppercase">
           step 1 · post /upload-url → step 2 · put presigned object
         </p>
       }
@@ -208,29 +208,29 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={cn(
-          'flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed px-6 py-9 text-center transition-colors',
+          'flex cursor-pointer flex-col items-center justify-center gap-3 rounded-none border border-dashed px-6 py-9 text-center transition-colors',
           isDragging
-            ? 'border-accent bg-accent-soft'
-            : 'border-line-strong bg-canvas-soft/50 hover:border-accent/60 hover:bg-canvas-soft',
+            ? 'border-slate-900 bg-slate-50'
+            : 'border-slate-300 bg-white hover:border-slate-900 hover:bg-slate-50',
           isBusy && 'pointer-events-none opacity-60',
         )}
       >
         <span
           className={cn(
-            'flex size-12 items-center justify-center rounded-xl border bg-canvas transition-colors',
-            isDragging ? 'border-accent text-accent' : 'border-line text-muted',
+            'flex size-12 items-center justify-center rounded-none border bg-slate-50 transition-colors',
+            isDragging ? 'border-slate-900 text-slate-900' : 'border-slate-200 text-slate-500',
           )}
         >
           <CloudUpload className="size-6" />
         </span>
 
         <span className="space-y-1">
-          <span className="block text-sm font-medium text-ink">
+          <span className="block text-sm font-medium text-slate-900">
             {isDragging ? 'Drop to stage the document' : 'Drag & drop your document'}
           </span>
-          <span className="block text-xs text-muted">
+          <span className="block text-xs text-slate-500">
             or{' '}
-            <span className="font-medium text-accent underline decoration-accent/40 underline-offset-4">
+            <span className="font-medium text-slate-900 underline decoration-slate-300 underline-offset-4">
               browse files
             </span>
           </span>
@@ -240,25 +240,25 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
           {SUPPORTED_EXTENSIONS.map((extension) => (
             <span
               key={extension}
-              className="rounded border border-line bg-canvas px-1.5 py-0.5 font-mono text-[10px] text-faint"
+              className="rounded-none border border-slate-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-slate-500"
             >
               {extension}
             </span>
           ))}
-          <span className="font-mono text-[10px] text-faint">
+          <span className="font-mono text-[10px] text-slate-400">
             max {formatBytes(MAX_FILE_BYTES)}
           </span>
         </span>
       </label>
 
       {file ? (
-        <div className="flex items-center gap-3 rounded-xl border border-line bg-canvas-soft/70 p-3">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-line bg-canvas text-accent">
+        <div className="flex items-center gap-3 rounded-none border border-slate-200 bg-slate-50 p-3">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-none border border-slate-200 bg-white text-slate-900">
             <FileText className="size-4" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm text-ink">{file.name}</p>
-            <p className="truncate font-mono text-[10px] tracking-[0.14em] text-faint uppercase">
+            <p className="truncate text-sm text-slate-900">{file.name}</p>
+            <p className="truncate font-mono text-[10px] tracking-[0.14em] text-slate-400 uppercase">
               {formatBytes(file.size)} · {resolveContentType(file)}
             </p>
           </div>
@@ -266,7 +266,7 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
             type="button"
             onClick={() => selectFile(null)}
             aria-label="Remove selected file"
-            className="rounded-md border border-line p-1.5 text-faint transition-colors hover:border-danger/40 hover:text-danger"
+            className="rounded-none border border-slate-300 p-1.5 text-slate-500 transition-colors hover:border-rose-300 hover:text-rose-700"
           >
             <Trash2 className="size-3.5" />
           </button>
@@ -275,20 +275,20 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
 
       {isBusy ? (
         <div className="space-y-2">
-          <div className="flex items-center justify-between gap-3 font-mono text-[10px] tracking-[0.14em] text-faint uppercase">
+          <div className="flex items-center justify-between gap-3 font-mono text-[10px] tracking-[0.14em] text-slate-400 uppercase">
             <span>{progressLabel}</span>
-            <span className="text-muted tabular-nums">{progress}%</span>
+            <span className="text-slate-500 tabular-nums">{progress}%</span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full border border-line/70 bg-canvas">
+          <div className="h-1.5 w-full overflow-hidden rounded-none border border-slate-200 bg-slate-100">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-accent-soft to-accent transition-[width] duration-300"
+              className="h-full rounded-none bg-gradient-to-r from-slate-700 to-slate-900 transition-[width] duration-300"
               style={{ width: `${Math.max(progress, stage === 'requesting-url' ? 8 : 0)}%` }}
             />
           </div>
         </div>
       ) : null}
       {stage === 'complete' && documentId ? (
-        <div className="flex items-start gap-2 rounded-lg border border-success/30 bg-success-soft px-3 py-2.5 text-xs text-success">
+        <div className="flex items-start gap-2 rounded-none border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-xs text-emerald-700">
           <Check className="mt-0.5 size-3.5 shrink-0" />
           <p className="leading-relaxed">
             Transfer complete. <span className="font-mono">{documentId}</span> is queued for AI
@@ -298,7 +298,7 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
       ) : null}
 
       {error ? (
-        <div className="flex items-start gap-2 rounded-lg border border-danger/30 bg-danger-soft px-3 py-2.5 text-xs text-danger">
+        <div className="flex items-start gap-2 rounded-none border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs text-rose-700">
           <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
           <p className="leading-relaxed">{error}</p>
         </div>
@@ -309,10 +309,10 @@ export function UploadCard({ onUploaded }: UploadCardProps) {
         onClick={() => void handleUpload()}
         disabled={!file || isBusy}
         className={cn(
-          'inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 font-mono text-xs font-medium tracking-[0.14em] uppercase transition-all',
+          'inline-flex w-full items-center justify-center gap-2 rounded-none px-4 py-3 font-mono text-xs font-medium tracking-[0.14em] uppercase transition-all',
           !file || isBusy
-            ? 'cursor-not-allowed border border-line bg-canvas-soft text-faint'
-            : 'bg-accent text-canvas hover:bg-accent-strong hover:shadow-glow',
+            ? 'cursor-not-allowed border border-slate-200 bg-slate-100 text-slate-400'
+            : 'border border-slate-900 bg-slate-900 text-white hover:bg-slate-800',
         )}
       >
         {isBusy ? <LoaderCircle className="size-4 animate-spin" /> : <FileUp className="size-4" />}

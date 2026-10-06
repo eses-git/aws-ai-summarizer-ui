@@ -65,19 +65,19 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
 
   return (
     <article
-      className="animate-rise rounded-xl border border-line bg-canvas-soft/50 p-4 transition-colors hover:border-line-strong hover:bg-canvas-soft"
+      className="animate-rise rounded-none border border-slate-200 bg-white p-4 transition-colors hover:border-slate-300"
       style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
     >
       <div className="flex items-start gap-3">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-line bg-canvas text-accent">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-none border border-slate-200 bg-slate-50 text-slate-900">
           <FileText className="size-4" />
         </span>
 
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium text-ink" title={document.fileName}>
+          <p className="truncate text-sm font-medium text-slate-900" title={document.fileName}>
             {document.fileName}
           </p>
-          <p className="mt-1 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.12em] text-faint uppercase">
+          <p className="mt-1 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.12em] text-slate-400 uppercase">
             <Hash className="size-3" />
             {shortId(document.id)}
           </p>
@@ -86,24 +86,24 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
         <StatusBadge status={document.status} />
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] tracking-[0.12em] text-faint uppercase">
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[10px] tracking-[0.12em] text-slate-400 uppercase">
         <span className="flex items-center gap-1.5" title={formatAbsoluteTime(document.createdAt)}>
           <Clock className="size-3" />
           {formatRelativeTime(document.createdAt)}
         </span>
-        <span className="size-1 rounded-full bg-line-strong" />
+        <span className="size-1 rounded-none bg-slate-300" />
         <span className="flex items-center gap-1.5">
           <HardDrive className="size-3" />
           {formatBytes(document.fileSize)}
         </span>
-        <span className="size-1 rounded-full bg-line-strong" />
+        <span className="size-1 rounded-none bg-slate-300" />
         <span className="max-w-[140px] truncate">{document.contentType}</span>
       </div>
 
-      <div className="mt-3 rounded-lg border border-line/70 bg-canvas/70 p-3">
+      <div className="mt-3 rounded-none border border-slate-200 bg-slate-50 p-3">
         <div className="flex items-center justify-between gap-3">
-          <p className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.16em] text-faint uppercase">
-            <Sparkles className="size-3 text-accent" />
+          <p className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.16em] text-slate-400 uppercase">
+            <Sparkles className="size-3 text-slate-900" />
             ai summary
           </p>
 
@@ -114,10 +114,10 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
               disabled={!hasSummary}
               title={hasSummary ? 'Copy summary to clipboard' : 'Summary not available yet'}
               className={cn(
-                'inline-flex items-center gap-1 rounded-md border px-2 py-1 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors',
-                copyState === 'copied' && 'border-success/30 bg-success-soft text-success',
-                copyState === 'failed' && 'border-danger/30 bg-danger-soft text-danger',
-                copyState === 'idle' && 'border-line text-faint hover:border-accent/40 hover:text-accent',
+                'inline-flex items-center gap-1 rounded-none border px-2 py-1 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors',
+                copyState === 'copied' && 'border-emerald-200 bg-emerald-50 text-emerald-700',
+                copyState === 'failed' && 'border-rose-200 bg-rose-50 text-rose-700',
+                copyState === 'idle' && 'border-slate-300 text-slate-500 hover:border-slate-900 hover:text-slate-900',
                 !hasSummary && 'cursor-not-allowed opacity-50',
               )}
             >
@@ -138,10 +138,10 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
               title="Delete document — DELETE /documents/:id"
               aria-label={`Delete ${document.fileName}`}
               className={cn(
-                'inline-flex items-center gap-1 rounded-md border px-2 py-1 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors',
-                deleteState === 'failed' && 'border-danger/30 bg-danger-soft text-danger',
-                deleteState === 'deleting' && 'cursor-wait border-danger/30 text-danger',
-                deleteState === 'idle' && 'border-line text-faint hover:border-danger/40 hover:text-danger',
+                'inline-flex items-center gap-1 rounded-none border px-2 py-1 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors',
+                deleteState === 'failed' && 'border-rose-200 bg-rose-50 text-rose-700',
+                deleteState === 'deleting' && 'cursor-wait border-rose-200 text-rose-700',
+                deleteState === 'idle' && 'border-slate-300 text-slate-500 hover:border-rose-300 hover:text-rose-700',
               )}
             >
               {isDeleting ? (
@@ -160,7 +160,7 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
           <>
             <p
               className={cn(
-                'mt-2 text-xs leading-relaxed text-slate-300',
+                'mt-2 text-xs leading-relaxed text-slate-700',
                 !isExpanded && 'line-clamp-3',
               )}
             >
@@ -172,7 +172,7 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
                 type="button"
                 onClick={() => setIsExpanded((previous) => !previous)}
                 aria-expanded={isExpanded}
-                className="mt-2 inline-flex items-center gap-1 font-mono text-[10px] tracking-[0.12em] text-faint uppercase transition-colors hover:text-accent"
+                className="mt-2 inline-flex items-center gap-1 font-mono text-[10px] tracking-[0.12em] text-slate-400 uppercase transition-colors hover:text-slate-900"
               >
                 {isExpanded ? 'collapse' : 'expand'}
                 <ChevronDown
@@ -182,7 +182,7 @@ export function SummaryCard({ document, index, onDeleted }: SummaryCardProps) {
             ) : null}
           </>
         ) : (
-          <p className="mt-2 flex items-center gap-2 font-mono text-[11px] tracking-[0.08em] text-warn">
+          <p className="mt-2 flex items-center gap-2 font-mono text-[11px] tracking-[0.08em] text-amber-600">
             <LoaderCircle className="size-3.5 animate-spin" />
             generating summary…
           </p>
